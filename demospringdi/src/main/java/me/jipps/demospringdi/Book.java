@@ -4,6 +4,8 @@ package me.jipps.demospringdi;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 public class Book {
@@ -13,6 +15,9 @@ public class Book {
     private Integer id;
 
     private String title;
+
+    @OneToMany
+    private List<Note> notes;
 
     public Integer getId() {
         return id;

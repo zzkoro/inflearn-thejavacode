@@ -19,6 +19,9 @@ import java.lang.reflect.Proxy;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 //@SpringBootTest
 public class BookServiceTest {
@@ -94,5 +97,12 @@ public class BookServiceTest {
         book.setTitle("spring");
         bookService2.rent(book);
         bookService2.returnBook(book);
+    }
+
+    @Test
+    public void di4() {
+        BookRepository bookRepositoryMock = mock(BookRepository.class);
+        Book hibernateBook = new Book();
+        when(bookRepositoryMock.save(any())).thenReturn(hibernateBook);
     }
 }
