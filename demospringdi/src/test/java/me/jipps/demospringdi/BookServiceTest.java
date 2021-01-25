@@ -4,10 +4,6 @@ package me.jipps.demospringdi;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -16,9 +12,10 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -45,11 +42,26 @@ public class BookServiceTest {
 
 
     @Test
-    public void di() {
+    public void di() throws InvocationTargetException, IllegalAccessException {
         Book book = new Book();
         book.setTitle("spring");
-        bookService.rent(book);
-        bookService.returnBook(book);
+
+        List<Method> methodList = List.of(BookService.class.getDeclaredMethods());
+        System.out.println("bookService class info: " + bookService.getClass());
+        Stream.of(bookService.getClass().getDeclaredMethods()).forEach( m -> {
+            System.out.println("bookService Proxy method: " + m.getName() + ", returnType: " + m.getReturnType());
+            System.out.println("parameters:");
+            Stream.of(m.getParameterTypes()).forEach(System.out::println);
+            System.out.println("-----------------------------");
+        });
+
+        for (Method method : methodList) {
+            System.out.println("method name: " + method.getName());
+            method.invoke(bookService, book);
+        }
+
+//        bookService.rent(book);
+//        bookService.returnBook(book);
     }
 
     @Test
