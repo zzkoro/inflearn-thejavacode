@@ -1,5 +1,7 @@
 package me.jipps.demospringdi;
 
+import lombok.Getter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,6 +11,6 @@ public class Note {
 
     @Id @GeneratedValue
     private Integer id;
-
     private String text;
+
 }
